@@ -1,0 +1,67 @@
+INFO: Seed: 4051412277
+INFO: Loaded 0 modules (0 guards): 
+Loading corpus dir: /samples/
+Loaded 1024/1257 files from /samples/
+#0	READ units: 1257
+#1257	INITED cov: 1307 bits: 7436 indir: 7 corp: 638/546Kb exec/s: 1257 rss: 101Mb
+=================================================================
+==15669==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x6100000072f1 at pc 0x7fd0524c35e1 bp 0x7ffc5ddab430 sp 0x7ffc5ddab428
+READ of size 1 at 0x6100000072f1 thread T0
+    #0 0x7fd0524c35e0 in mad_bit_read (/usr/lib/libmad.so.0+0x75e0)
+    #1 0x7fd0524ecf36 in II_samples (/usr/lib/libmad.so.0+0x30f36)
+    #2 0x7fd0524eb307 in mad_layer_II (/usr/lib/libmad.so.0+0x2f307)
+    #3 0x7fd0524d26c4 in mad_frame_decode (/usr/lib/libmad.so.0+0x166c4)
+    #4 0x7fd0524e0e4b in run_sync (/usr/lib/libmad.so.0+0x24e4b)
+    #5 0x7fd0524dfa9e in mad_decoder_run (/usr/lib/libmad.so.0+0x23a9e)
+    #6 0x50e2bd in LLVMFuzzerTestOneInput (/src/libmad-0.15.1b/libmad-fuzzer+0x50e2bd)
+    #7 0x4f85f4 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:536:13
+    #8 0x4f87e4 in fuzzer::Fuzzer::RunOne(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:488:3
+    #9 0x4f98ce in fuzzer::Fuzzer::MutateAndTestOne() /src/Fuzzer/FuzzerLoop.cpp:722:30
+    #10 0x4f9ae7 in fuzzer::Fuzzer::Loop() /src/Fuzzer/FuzzerLoop.cpp:755:5
+    #11 0x4f1ca4 in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) /src/Fuzzer/FuzzerDriver.cpp:530:3
+    #12 0x4ef6f0 in main /src/Fuzzer/FuzzerMain.cpp:20:10
+    #13 0x7fd05124982f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2082f)
+    #14 0x41b258 in _start (/src/libmad-0.15.1b/libmad-fuzzer+0x41b258)
+
+0x6100000072f1 is located 0 bytes to the right of 177-byte region [0x610000007240,0x6100000072f1)
+allocated by thread T0 here:
+    #0 0x4ecad0 in operator new[](unsigned long) (/src/libmad-0.15.1b/libmad-fuzzer+0x4ecad0)
+    #1 0x4f8537 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:527:23
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow (/usr/lib/libmad.so.0+0x75e0) in mad_bit_read
+Shadow bytes around the buggy address:
+  0x0c207fff8e00: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c207fff8e10: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c207fff8e20: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c207fff8e30: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c207fff8e40: fa fa fa fa fa fa fa fa 00 00 00 00 00 00 00 00
+=>0x0c207fff8e50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00[01]fa
+  0x0c207fff8e60: fa fa fa fa fa fa fa fa fd fd fd fd fd fd fd fd
+  0x0c207fff8e70: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fa
+  0x0c207fff8e80: fa fa fa fa fa fa fa fa fd fd fd fd fd fd fd fd
+  0x0c207fff8e90: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fa
+  0x0c207fff8ea0: fa fa fa fa fa fa fa fa 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Heap right redzone:      fb
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack partial redzone:   f4
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==15669==ABORTING
+MS: 1 CrossOver-; base unit: b2d7227661ffb62c704b1d32b163e242862cd244
+0x0,0xff,0xf0,0xff,0xfd,0x3,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x83,0x13,0x10,0x17,0x60,0xa,0x1f,0x4,0x22,0x1,0x4,0x45,0x27,0x55,0xa4,0xc4,0x63,0x26,0xb0,0xa4,0x1,0x80,0x29,0x84,0xf1,0x0,0x1,0xc2,0x98,0x8e,0xd4,0x43,0x99,0xff,0xfd,0x3,0x4c,0xe1,0x76,0x66,0x32,0x36,0x2e,0x34,0x30,0x2e,0x31,0x30,0x31,0x0,0x0,0xfc,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0x0,0x0,0x0,0xcb,0x18,0xc9

@@ -1,0 +1,70 @@
+INFO: Seed: 202977073
+INFO: Loaded 0 modules (0 guards): 
+Loading corpus dir: /samples/
+Loaded 1024/1244 files from /samples/
+#0	READ units: 1244
+#1244	INITED cov: 1296 bits: 7296 indir: 7 corp: 652/549Kb exec/s: 622 rss: 101Mb
+=================================================================
+==15153==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x60f00000e87e at pc 0x7f1aba1be5e1 bp 0x7ffc3dd5f930 sp 0x7ffc3dd5f928
+READ of size 1 at 0x60f00000e87e thread T0
+    #0 0x7f1aba1be5e0 in mad_bit_read (/usr/lib/libmad.so.0+0x75e0)
+    #1 0x7f1aba1bf20e in mad_bit_crc (/usr/lib/libmad.so.0+0x820e)
+    #2 0x7f1aba1e14b5 in mad_layer_I (/usr/lib/libmad.so.0+0x2a4b5)
+    #3 0x7f1aba1cd6c4 in mad_frame_decode (/usr/lib/libmad.so.0+0x166c4)
+    #4 0x7f1aba1dbe4b in run_sync (/usr/lib/libmad.so.0+0x24e4b)
+    #5 0x7f1aba1daa9e in mad_decoder_run (/usr/lib/libmad.so.0+0x23a9e)
+    #6 0x50e2bd in LLVMFuzzerTestOneInput (/src/libmad-0.15.1b/libmad-fuzzer+0x50e2bd)
+    #7 0x4f85f4 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:536:13
+    #8 0x4f87e4 in fuzzer::Fuzzer::RunOne(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:488:3
+    #9 0x4f98ce in fuzzer::Fuzzer::MutateAndTestOne() /src/Fuzzer/FuzzerLoop.cpp:722:30
+    #10 0x4f9ae7 in fuzzer::Fuzzer::Loop() /src/Fuzzer/FuzzerLoop.cpp:755:5
+    #11 0x4f1ca4 in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) /src/Fuzzer/FuzzerDriver.cpp:530:3
+    #12 0x4ef6f0 in main /src/Fuzzer/FuzzerMain.cpp:20:10
+    #13 0x7f1ab8f4482f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2082f)
+    #14 0x41b258 in _start (/src/libmad-0.15.1b/libmad-fuzzer+0x41b258)
+
+0x60f00000e87e is located 0 bytes to the right of 174-byte region [0x60f00000e7d0,0x60f00000e87e)
+allocated by thread T0 here:
+    #0 0x4ecad0 in operator new[](unsigned long) (/src/libmad-0.15.1b/libmad-fuzzer+0x4ecad0)
+    #1 0x4f8537 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:527:23
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow (/usr/lib/libmad.so.0+0x75e0) in mad_bit_read
+Shadow bytes around the buggy address:
+  0x0c1e7fff9cb0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c1e7fff9cc0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c1e7fff9cd0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c1e7fff9ce0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c1e7fff9cf0: fa fa fa fa fa fa fa fa fa fa 00 00 00 00 00 00
+=>0x0c1e7fff9d00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00[06]
+  0x0c1e7fff9d10: fa fa fa fa fa fa fa fa fd fd fd fd fd fd fd fd
+  0x0c1e7fff9d20: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fa fa
+  0x0c1e7fff9d30: fa fa fa fa fa fa fd fd fd fd fd fd fd fd fd fd
+  0x0c1e7fff9d40: fd fd fd fd fd fd fd fd fd fd fd fd fa fa fa fa
+  0x0c1e7fff9d50: fa fa fa fa fd fd fd fd fd fd fd fd fd fd fd fd
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Heap right redzone:      fb
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack partial redzone:   f4
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==15153==ABORTING
+MS: 4 ChangeBit-ShuffleBytes-CMP-CrossOver- DE: "\x01\x00\x00\x00"-; base unit: 42f5a6114bfa3fe6aed6f8b4c53c665b181c0174
+0x68,0xc,0x2d,0x79,0x46,0xdc,0x83,0xdb,0x9d,0xb2,0xbf,0xff,0xff,0xff,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0x0,0x0,0xff,0xff,0x0,0xff,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xfe,0x0,0x0,0x0,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xf9,0x0,0x0,0x0,0x0,0x0,0x0,0x9d,0xb2,0xbf,0xff,0xff,0xff,0x0,0xff,0xff,0x0,0xff,0xff,0x3f,0x0,0x0,0x6,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xff,0xff,0xff,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xfe,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xfe,0x0,0x0,0x0,0x0,0x0,0x4,0x0,0x0,0x0,0x0,0xff,0xfe,0x0,0x9,0xc,0xf,0x12,0x48,0x47,0x0,0xff,0xd0,0xff,0xff,0xff,0xff,0xff,0xff,0xfe,0x3f,0x0,0x0,
+h\x0c-yF\xdc\x83\xdb\x9d\xb2\xbf\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\xff\x00\x00\xff\xff\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xfe\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xf9\x00\x00\x00\x00\x00\x00\x9d\xb2\xbf\xff\xff\xff\x00\xff\xff\x00\xff\xff?\x00\x00\x06\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xfe\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xfe\x00\x00\x00\x00\x00\x04\x00\x00\x00\x00\xff\xfe\x00\x09\x0c\x0f\x12HG\x00\xff\xd0\xff\xff\xff\xff\xff\xff\xfe?\x00\x00
+artifact_prefix='./'; Test unit written to /dev/shm/repro-file
+Base64: aAwteUbcg9udsr////8AAAAAAAAA/wAA//8A/wAAAAAAAAAAAAAAAAAAAAAAAAD//gAAAP/////////5AAAAAAAAnbK/////AP//AP//PwAABgAAAAAAAAD/////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/+AAAAAAAAAAAAAAAAAAAAAAD//////////gAAAAAABAAAAAD//gAJDA8SSEcA/9D////////+PwAA

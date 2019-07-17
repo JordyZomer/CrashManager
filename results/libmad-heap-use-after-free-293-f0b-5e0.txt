@@ -1,0 +1,72 @@
+INFO: Seed: 4207857350
+INFO: Loaded 0 modules (0 guards): 
+Loading corpus dir: /samples/
+Loaded 1024/1257 files from /samples/
+#0	READ units: 1257
+#1024	pulse  cov: 1307 bits: 7342 indir: 7 corp: 575/484Kb exec/s: 341 rss: 89Mb
+#1257	INITED cov: 1307 bits: 7436 indir: 7 corp: 623/531Kb exec/s: 419 rss: 100Mb
+=================================================================
+==7878==ERROR: AddressSanitizer: heap-use-after-free on address 0x618000092c95 at pc 0x7f5d0f2575e1 bp 0x7ffe05431a10 sp 0x7ffe05431a08
+READ of size 1 at 0x618000092c95 thread T0
+    #0 0x7f5d0f2575e0 in mad_bit_read (/usr/lib/libmad.so.0+0x75e0)
+    #1 0x7f5d0f28bf0b in III_scalefactors (/usr/lib/libmad.so.0+0x3bf0b)
+    #2 0x7f5d0f287293 in III_decode (/usr/lib/libmad.so.0+0x37293)
+    #3 0x7f5d0f28380f in mad_layer_III (/usr/lib/libmad.so.0+0x3380f)
+    #4 0x7f5d0f2666c4 in mad_frame_decode (/usr/lib/libmad.so.0+0x166c4)
+    #5 0x7f5d0f274e4b in run_sync (/usr/lib/libmad.so.0+0x24e4b)
+    #6 0x7f5d0f273a9e in mad_decoder_run (/usr/lib/libmad.so.0+0x23a9e)
+    #7 0x50e2bd in LLVMFuzzerTestOneInput (/src/libmad-0.15.1b/libmad-fuzzer+0x50e2bd)
+    #8 0x4f85f4 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:536:13
+    #9 0x4f87e4 in fuzzer::Fuzzer::RunOne(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:488:3
+    #10 0x4f98ce in fuzzer::Fuzzer::MutateAndTestOne() /src/Fuzzer/FuzzerLoop.cpp:722:30
+    #11 0x4f9ae7 in fuzzer::Fuzzer::Loop() /src/Fuzzer/FuzzerLoop.cpp:755:5
+    #12 0x4f1ca4 in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) /src/Fuzzer/FuzzerDriver.cpp:530:3
+    #13 0x4ef6f0 in main /src/Fuzzer/FuzzerMain.cpp:20:10
+    #14 0x7f5d0dfdd82f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2082f)
+    #15 0x41b258 in _start (/src/libmad-0.15.1b/libmad-fuzzer+0x41b258)
+
+0x618000092c95 is located 21 bytes inside of 809-byte region [0x618000092c80,0x618000092fa9)
+freed by thread T0 here:
+    #0 0x4ed0d0 in operator delete[](void*) (/src/libmad-0.15.1b/libmad-fuzzer+0x4ed0d0)
+    #1 0x4f87e4 in fuzzer::Fuzzer::RunOne(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:488:3
+
+previously allocated by thread T0 here:
+    #0 0x4ecad0 in operator new[](unsigned long) (/src/libmad-0.15.1b/libmad-fuzzer+0x4ecad0)
+    #1 0x4f8537 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:527:23
+
+SUMMARY: AddressSanitizer: heap-use-after-free (/usr/lib/libmad.so.0+0x75e0) in mad_bit_read
+Shadow bytes around the buggy address:
+  0x0c308000a540: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c308000a550: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c308000a560: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c308000a570: 00 00 00 00 00 01 fa fa fa fa fa fa fa fa fa fa
+  0x0c308000a580: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+=>0x0c308000a590: fd fd[fd]fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c308000a5a0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c308000a5b0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c308000a5c0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c308000a5d0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c308000a5e0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Heap right redzone:      fb
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack partial redzone:   f4
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==7878==ABORTING
+MS: 2 EraseBytes-ChangeByte-; base unit: 8b81b05a553e9e2da76fc50eb62a74270fb7

@@ -1,0 +1,68 @@
+INFO: Seed: 1163984874
+INFO: Loaded 0 modules (0 guards): 
+Loading corpus dir: /samples/
+Loaded 1024/1257 files from /samples/
+#0	READ units: 1257
+#1257	INITED cov: 1307 bits: 7436 indir: 7 corp: 631/539Kb exec/s: 1257 rss: 101Mb
+=================================================================
+==16362==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x617000041a2c at pc 0x7fdf22041390 bp 0x7ffd26329f80 sp 0x7ffd26329f78
+READ of size 1 at 0x617000041a2c thread T0
+    #0 0x7fdf2204138f in mad_bit_skip (/usr/lib/libmad.so.0+0x738f)
+    #1 0x7fdf2207711a in III_huffdecode (/usr/lib/libmad.so.0+0x3d11a)
+    #2 0x7fdf22071370 in III_decode (/usr/lib/libmad.so.0+0x37370)
+    #3 0x7fdf2206d80f in mad_layer_III (/usr/lib/libmad.so.0+0x3380f)
+    #4 0x7fdf220506c4 in mad_frame_decode (/usr/lib/libmad.so.0+0x166c4)
+    #5 0x7fdf2205ee4b in run_sync (/usr/lib/libmad.so.0+0x24e4b)
+    #6 0x7fdf2205da9e in mad_decoder_run (/usr/lib/libmad.so.0+0x23a9e)
+    #7 0x50e2bd in LLVMFuzzerTestOneInput (/src/libmad-0.15.1b/libmad-fuzzer+0x50e2bd)
+    #8 0x4f85f4 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:536:13
+    #9 0x4f87e4 in fuzzer::Fuzzer::RunOne(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:488:3
+    #10 0x4f98ce in fuzzer::Fuzzer::MutateAndTestOne() /src/Fuzzer/FuzzerLoop.cpp:722:30
+    #11 0x4f9ae7 in fuzzer::Fuzzer::Loop() /src/Fuzzer/FuzzerLoop.cpp:755:5
+    #12 0x4f1ca4 in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) /src/Fuzzer/FuzzerDriver.cpp:530:3
+    #13 0x4ef6f0 in main /src/Fuzzer/FuzzerMain.cpp:20:10
+    #14 0x7fdf20dc782f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2082f)
+    #15 0x41b258 in _start (/src/libmad-0.15.1b/libmad-fuzzer+0x41b258)
+
+0x617000041a2c is located 66 bytes to the right of 746-byte region [0x617000041700,0x6170000419ea)
+allocated by thread T0 here:
+    #0 0x4ecad0 in operator new[](unsigned long) (/src/libmad-0.15.1b/libmad-fuzzer+0x4ecad0)
+    #1 0x4f8537 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) /src/Fuzzer/FuzzerLoop.cpp:527:23
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow (/usr/lib/libmad.so.0+0x738f) in mad_bit_skip
+Shadow bytes around the buggy address:
+  0x0c2e800002f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c2e80000300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c2e80000310: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c2e80000320: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c2e80000330: 00 00 00 00 00 00 00 00 00 00 00 00 00 02 fa fa
+=>0x0c2e80000340: fa fa fa fa fa[fa]fa fa fa fa fa fa fa fa fa fa
+  0x0c2e80000350: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c2e80000360: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c2e80000370: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c2e80000380: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x0c2e80000390: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Heap right redzone:      fb
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack partial redzone:   f4
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==16362==ABORTING
+MS: 1 EraseBytes-; base unit: 8caf0a6336ff4c682697bf7f31361c1e2a9e4aea
+artifact_prefix='./'; Test unit written to /dev/shm/repro-file
